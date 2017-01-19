@@ -4,16 +4,17 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 
 //引入数据库模块
-var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/test');
+// var mongoose = require('mongoose');
+// mongoose.connect('mongodb://localhost/test');
 
 
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
-var users = require('./routes/users');
+var user = require('./routes/user');
 var getparam = require('./routes/getparam');
+var register = require('./routes/register');
 
 var app = express();
 // view engine setup
@@ -28,9 +29,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-//app.use('/', index);
-app.use('/users', users);
+app.use('/', index);
+app.use('/user', user);
 app.use('/getparam', getparam);
+app.use('/register', register);
 // GET method route
 
 
