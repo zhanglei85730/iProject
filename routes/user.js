@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 // var mongoose = require('mongoose'); //导入mongoose模块
 
-var db = require('../dao/user.js'); //导入user数据模块
+var User = require('../dao/user'); //导入user数据模块
 
 
 
@@ -37,8 +37,6 @@ var db = require('../dao/user.js'); //导入user数据模块
 
 // db.find();
 
-db.connect("mongodb://localhost/myapp");
-var User = db.model();
 
 
 // var ss = User.find({ name: 'mimi' }, function(err, result) {
@@ -53,18 +51,26 @@ var User = db.model();
 
 
 
-
-
-
-
 router.post('/', function(req, res, next) {
     //查找所有数据
-    User.find(function(err, u) {
-        if (err) return console.error(err);
-        res.render('users', { tile: "用户列表", uu: u })
+    /*    users.find(function(err, u) {
+            if (err) return console.error(err);
+            res.render('users', { tile: "用户列表", uu: u })
 
-    })
+        })*/
+    var param = req.body;
+    if (param.username != '' && param.age != '' && param.sexual != '') {
+        //获取表单数据
+        var user = new User({ name: param.username, age: param.age, sexual: param.sexual });
+        user.save(function(err, user) {
+            if (err) return console.error(err);
+            res.send('注册成功');
+        });
+    } else {
+        res.send('信息填写错误');
+    }
 
-});
 
+
+})
 module.exports = router;
